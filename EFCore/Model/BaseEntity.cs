@@ -1,4 +1,4 @@
-﻿namespace EFCore.Model
+﻿namespace EFCoreCommon.Model
 {
     public class BaseEntity
     {

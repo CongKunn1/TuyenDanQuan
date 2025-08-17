@@ -9,7 +9,7 @@ using TuyenDanQuan.Data;
 
 #nullable disable
 
-namespace EFCore.Migrations
+namespace EFCoreCommon.Migrations
 {
     [DbContext(typeof(AppDbContext))]
     [Migration("20250817093608_AddbaseEntity")]
@@ -25,7 +25,7 @@ namespace EFCore.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
-            modelBuilder.Entity("EFCore.Model.Citizen", b =>
+            modelBuilder.Entity("EFCoreCommon.Model.Citizen", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -65,7 +65,7 @@ namespace EFCore.Migrations
                     b.ToTable("Citizen");
                 });
 
-            modelBuilder.Entity("EFCore.Model.Unit", b =>
+            modelBuilder.Entity("EFCoreCommon.Model.Unit", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()

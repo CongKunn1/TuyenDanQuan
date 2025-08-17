@@ -1,11 +1,11 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using System;
+using TuyenDanQuan.Data;
 
 // Remove the incorrect using directive causing CS0426
-// using EFCore.Data;
+// using EFCoreCommon.Data;
 // Remove the incorrect using directive causing CS0426
-// using EFCore.Data;
-using TuyenDanQuan.Data;
+// using EFCoreCommon.Data;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -25,7 +25,7 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
     // Remove or correct the problematic using directive.
-    // The error CS0426 occurs because 'EFCore.Data' does not exist in the type 'EFCore'.
+    // The error CS0426 occurs because 'EFCoreCommon.Data' does not exist in the type 'EFCoreCommon'.
     // If you intended to use a namespace, ensure it exists and is spelled correctly.
     // If your AppDbContext is in a different namespace, use that instead.
 

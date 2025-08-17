@@ -1,4 +1,4 @@
-﻿using EFCore.Model;
+﻿using EFCoreCommon.Model;
 using Microsoft.EntityFrameworkCore;
 
 namespace TuyenDanQuan.Data

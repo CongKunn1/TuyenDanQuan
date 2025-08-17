@@ -1,6 +1,10 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using EFCoreCommon.UnitOfWork;
+using EFCoreCommonCommon.UnitOfWork;
+using Microsoft.EntityFrameworkCore;
 using System;
 using TuyenDanQuan.Data;
+using TuyenDanQuan.Mapper;
+using TuyenDanQuan.Service;
 
 // Remove the incorrect using directive causing CS0426
 // using EFCoreCommon.Data;
@@ -12,6 +16,12 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+builder.Services.AddAutoMapper(cfg =>
+{
+    cfg.AddProfile<MappingProfile>();
+});
+builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
+builder.Services.AddScoped<IUnitService, UnitService>();
 
 builder.Services.AddDbContext<AppDbContext>(option =>
 {

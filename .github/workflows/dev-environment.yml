@@ -1,0 +1,60 @@
+name: Development Environment Setup
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [ dev ]
+    paths-ignore:
+      - '*.md'
+      - 'docs/**'
+
+env:
+  DOTNET_VERSION: '8.0.x'
+  BUILD_CONFIGURATION: 'Debug'
+
+jobs:
+  setup-dev-environment:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+      
+    - name: Setup .NET
+      uses: actions/setup-dotnet@v3
+      with:
+        dotnet-version: ${{ env.DOTNET_VERSION }}
+        
+    - name: Cache NuGet packages
+      uses: actions/cache@v3
+      with:
+        path: ~/.nuget/packages
+        key: ${{ runner.os }}-nuget-${{ hashFiles('**/*.csproj') }}
+        restore-keys: |
+          ${{ runner.os }}-nuget-
+          
+    - name: Restore dependencies
+      run: dotnet restore
+      
+    - name: Build solution
+      run: dotnet build --configuration ${{ env.BUILD_CONFIGURATION }} --no-restore
+      
+    - name: Run development checks
+      run: |
+        echo "Checking development environment..."
+        dotnet --info
+        echo "Solution structure:"
+        find . -name "*.csproj" -type f
+        
+    - name: Validate Entity Framework setup
+      run: |
+        cd TuyenDanQuan
+        dotnet ef --version || echo "EF Core Tools not installed globally"
+        dotnet tool list || echo "No local tools found"
+        
+    - name: Development environment summary
+      run: |
+        echo "✅ Development environment setup completed"
+        echo "📦 NuGet packages restored"
+        echo "🔨 Solution built successfully"
+        echo "🚀 Ready for development on dev branch"

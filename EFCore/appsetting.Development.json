@@ -1,0 +1,20 @@
+{
+  "Logging": {
+    "LogLevel": {
+      "Default": "Information",
+      "Microsoft.AspNetCore": "Warning",
+      "Microsoft.EntityFrameworkCore.Database.Command": "Information"
+    }
+  },
+  "ApiSettings": {
+    "JwtOptions": {
+      "Key": "dev-key-123456789123456789123456789abcdefasdasdasdasdasdasd",
+      "Issuer": "AuthAPI-Dev",
+      "Audience": "Client-Dev"
+    }
+  },
+  "AllowedHosts": "*",
+  "ConnectionStrings": {
+    "DefaultConnection": "Server=localhost;Database=TuyenDanQuan_Dev;Trusted_Connection=True;TrustServerCertificate=True"
+  }
+}

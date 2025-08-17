@@ -1,0 +1,22 @@
+# Git configuration for TuyenDanQuan project
+
+# Set up development branch tracking
+[branch "dev"]
+    remote = origin
+    merge = refs/heads/dev
+
+[branch "develop"]
+    remote = origin
+    merge = refs/heads/develop
+
+# Default push behavior
+[push]
+    default = current
+
+# Make sure line endings are handled correctly
+[core]
+    autocrlf = true
+
+# Enable long paths on Windows
+[core]
+    longpaths = true

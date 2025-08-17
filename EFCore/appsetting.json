@@ -15,7 +15,7 @@
   "AllowedHosts": "*",
 
   "ConnectionStrings": {
-    "DefaultConnection": "Server=localhost;Database=MyAppDB;Trusted_Connection=True;TrustServerCertificate=True;"
+    "DefaultConnection": "Server=localhost;Database=TuyenDanQuan;Trusted_Connection=True;TrustServerCertificate=True"
   }
   
   

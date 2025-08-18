@@ -22,7 +22,7 @@ builder.Services.AddAutoMapper(cfg =>
 });
 builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 builder.Services.AddScoped<IUnitService, UnitService>();
-
+builder.Services.AddScoped<ICitizenService, CitizenService>();
 builder.Services.AddDbContext<AppDbContext>(option =>
 {
     var x = builder.Configuration.GetConnectionString("DefaultConnection");

@@ -25,5 +25,7 @@ namespace EFCoreCommon.Repository
         public void Update(T entity) => _dbSet.Update(entity);
 
         public void Remove(T entity) => _dbSet.Remove(entity);
+        public IQueryable<T> GetQueryable() => _dbSet.AsQueryable();
+        public async Task AddRangeAsync(IEnumerable<T> entities) => await _dbSet.AddRangeAsync(entities);
     }
 }

@@ -50,4 +50,18 @@ public class CitizenController : ControllerBase
         if (!success) return NotFound();
         return NoContent();
     }
+    [HttpGet("filter")]
+    public async Task<IActionResult> Filter([FromQuery] CitizenFilterDto filter)
+    {
+        var result = await _citizenService.FilterAsync(filter);
+        return Ok(result);
+    }
+    [HttpPost("bulk")]
+    public async Task<IActionResult> CreateBulkAsync([FromBody] List<CreateCitizenDto> dtos)
+    {
+        await _citizenService.CreateBulkAsync(dtos);
+        return Ok();
+    }
 }
+
+

@@ -1,4 +1,6 @@
-﻿using EFCoreCommon.UnitOfWork;
+﻿using EFCoreCommon.Repository.Interface;
+using EFCoreCommon.Repository;
+using EFCoreCommon.UnitOfWork;
 using EFCoreCommonCommon.UnitOfWork;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -23,6 +25,8 @@ builder.Services.AddAutoMapper(cfg =>
 builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 builder.Services.AddScoped<IUnitService, UnitService>();
 builder.Services.AddScoped<ICitizenService, CitizenService>();
+builder.Services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
+
 builder.Services.AddDbContext<AppDbContext>(option =>
 {
     var x = builder.Configuration.GetConnectionString("DefaultConnection");

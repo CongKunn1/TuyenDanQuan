@@ -14,5 +14,7 @@ namespace EFCoreCommon.Repository.Interface
         Task AddAsync(T entity);
         void Update(T entity);
         void Remove(T entity);
+        IQueryable<T> GetQueryable();
+        Task AddRangeAsync(IEnumerable<T> entities);
     }
 }

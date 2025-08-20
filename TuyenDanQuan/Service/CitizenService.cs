@@ -2,6 +2,8 @@
 using EFCoreCommon.Model;
 using EFCoreCommon.Repository.Interface;
 using EFCoreCommon.UnitOfWork;
+using Microsoft.EntityFrameworkCore;
+using System.Linq;
 using TuyenDanQuan.Models;
 
 namespace TuyenDanQuan.Service
@@ -16,7 +18,6 @@ namespace TuyenDanQuan.Service
         {
             _unitOfWork = unitOfWork;
             _mapper = mapper;
-            _citizenRepository = citizenRepository;
         }
 
         // Create
@@ -149,13 +150,13 @@ namespace TuyenDanQuan.Service
                 query = query.Where(c => c.DateOfBirth == filter.DateOfBirth.Value);
             if (!string.IsNullOrEmpty(filter.Address))
                 query = query.Where(c => c.Address.Contains(filter.Address));
-            var totalItems = query.Count();
+            var totalItems = query.CountAsync();
 
             // paging
             var citizens = query
                 .Skip((filter.PageNumber - 1) * filter.PageSize) 
                 .Take(filter.PageSize)
-                .ToList();
+                .ToListAsync();
 
             // mapping
             var citizenDtos = _mapper.Map<IEnumerable<CitizenDto>>(citizens);
@@ -163,26 +164,33 @@ namespace TuyenDanQuan.Service
             return new PagedResult<CitizenDto>
             {
                 Items = citizenDtos,
-                TotalItems = totalItems,
+                TotalItems = await totalItems,
                 PageNumber = filter.PageNumber,
                 PageSize = filter.PageSize
             };
         }
         public async Task CreateBulkAsync(List<CreateCitizenDto> dtos)
         {
-            var citizens = dtos.Select(dto => new Citizen  
+            try
             {
-                FullName = dto.FullName,
-                IdentificationNumber = dto.IdentificationNumber,
-                DateOfBirth = dto.DateOfBirth,
-                Address = dto.Address,
-                EmailAddress = dto.EmailAddress,
-                PhoneNumber = dto.PhoneNumber,
-                Sex = dto.Sex
-            }).ToList();
+                var citizens = dtos.Select(dto => new Citizen
+                {
+                    FullName = dto.FullName,
+                    IdentificationNumber = dto.IdentificationNumber,
+                    DateOfBirth = dto.DateOfBirth,
+                    Address = dto.Address,
+                    EmailAddress = dto.EmailAddress,
+                    PhoneNumber = dto.PhoneNumber,
+                    Sex = dto.Sex
+                }).ToList();
 
-            await _citizenRepository.AddRangeAsync(citizens);
-            await _unitOfWork.SaveChangesAsync();
+                await _unitOfWork.Citizens.AddRangeAsync(citizens);
+                await _unitOfWork.SaveChangesAsync();
+            }
+            catch(Exception ex)
+            {
+                throw new Exception("Error occurred while creating citizens in bulk.", ex);
+            }
         }
 
        

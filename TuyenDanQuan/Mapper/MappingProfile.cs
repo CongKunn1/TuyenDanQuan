@@ -10,8 +10,6 @@ namespace TuyenDanQuan.Mapper
         {
             CreateMap<CreateUnitDto, Unit>();
             CreateMap<Unit, UnitDto>();
-            CreateMap<CreateCitizenDto, Citizen>().ReverseMap(); ;
-            CreateMap<Citizen, CitizenDto>().ReverseMap();
         }
     }
 }

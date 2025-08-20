@@ -22,26 +22,68 @@ namespace TuyenDanQuan.Service
         // Create
         public async Task<CitizenDto> CreateAsync(CreateCitizenDto dto)
         {
-            var citizen = _mapper.Map<Citizen>(dto);
+            var citizen = new Citizen
+            {
+                FullName = dto.FullName,
+                IdentificationNumber = dto.IdentificationNumber,
+                Sex = dto.Sex,
+                PhoneNumber = dto.PhoneNumber,
+                EmailAddress = dto.EmailAddress,
+                DateOfBirth = dto.DateOfBirth,
+                Address = dto.Address
 
-            await _unitOfWork.Citizens.AddAsync(citizen);
+            };
+             await _unitOfWork.Citizens.AddAsync(citizen);
             await _unitOfWork.SaveChangesAsync();
+            var citizenDto = new CitizenDto
+            {
+                FullName = dto.FullName,
+                IdentificationNumber = dto.IdentificationNumber,
+                Sex = dto.Sex,
+                PhoneNumber = dto.PhoneNumber,
+                EmailAddress = dto.EmailAddress,
+                DateOfBirth = dto.DateOfBirth,
+                Address = dto.Address,
 
-            return _mapper.Map<CitizenDto>(citizen);
+            };
+            return citizenDto;
+            
         }
 
         // Get all
         public async Task<IEnumerable<CitizenDto>> GetAllAsync()
         {
             var citizens = await _unitOfWork.Citizens.GetAllAsync();
-            return _mapper.Map<IEnumerable<CitizenDto>>(citizens);
+            var citizenDtos = citizens.Select(c => new CitizenDto
+            {
+                FullName = c.FullName,
+                IdentificationNumber = c.IdentificationNumber,
+                Sex = c.Sex,
+                PhoneNumber = c.PhoneNumber,
+                EmailAddress = c.EmailAddress,
+                DateOfBirth = c.DateOfBirth,
+                Address = c.Address
+            });
+            return citizenDtos;
         }
 
         // Get by id
         public async Task<CitizenDto> GetByIdAsync(int id)
         {
             var citizen = await _unitOfWork.Citizens.GetByIdAsync(id);
-            return citizen == null ? null : _mapper.Map<CitizenDto>(citizen);
+            if (citizen == null) return null;
+            var citizenDto = new CitizenDto
+            {
+                Id = citizen.Id,
+                FullName = citizen.FullName,
+                IdentificationNumber = citizen.IdentificationNumber,
+                Sex = citizen.Sex,
+                PhoneNumber = citizen.PhoneNumber,
+                EmailAddress = citizen.EmailAddress,
+                DateOfBirth = citizen.DateOfBirth,
+                Address = citizen.Address
+            };
+            return citizenDto;
         }
 
         // Update
@@ -49,12 +91,29 @@ namespace TuyenDanQuan.Service
         {
             var citizen = await _unitOfWork.Citizens.GetByIdAsync(id);
             if (citizen == null) return null;
+            citizen.FullName = dto.FullName;
+            citizen.IdentificationNumber = dto.IdentificationNumber;
+            citizen.Sex = dto.Sex;
+            citizen.PhoneNumber = dto.PhoneNumber;
+            citizen.EmailAddress = dto.EmailAddress;
+            citizen.DateOfBirth = dto.DateOfBirth;
+            citizen.Address = dto.Address;
+            var citizenDto = new CitizenDto
+            {
+                Id = citizen.Id,
+                FullName = citizen.FullName,
+                IdentificationNumber = dto.IdentificationNumber,
+                Sex = dto.Sex,
+                PhoneNumber = dto.PhoneNumber,
+                EmailAddress = dto.EmailAddress,
+                DateOfBirth = dto.DateOfBirth,
+                Address = dto.Address
+            };
 
-            _mapper.Map(dto, citizen);
             _unitOfWork.Citizens.Update(citizen);
             await _unitOfWork.SaveChangesAsync();
 
-            return _mapper.Map<CitizenDto>(citizen);
+            return citizenDto;
         }
 
         // Delete
@@ -94,7 +153,7 @@ namespace TuyenDanQuan.Service
 
             // paging
             var citizens = query
-                .Skip((filter.PageNumber - 1) * filter.PageSize)
+                .Skip((filter.PageNumber - 1) * filter.PageSize) 
                 .Take(filter.PageSize)
                 .ToList();
 
@@ -111,7 +170,7 @@ namespace TuyenDanQuan.Service
         }
         public async Task CreateBulkAsync(List<CreateCitizenDto> dtos)
         {
-            var citizens = dtos.Select(dto => new Citizen
+            var citizens = dtos.Select(dto => new Citizen  
             {
                 FullName = dto.FullName,
                 IdentificationNumber = dto.IdentificationNumber,

@@ -2,7 +2,6 @@
 {
     public class RewardProposal : BaseEntity
     {
-        public int ProposalId { get; set; }
         public int UnitId { get; set; }
         public int CitizenId { get; set; }
 

@@ -2,10 +2,7 @@
 {
     public class DisciplineApproval : BaseEntity
     {
-        public int DisciplineApprovalId { get; set; }
-
         public int DisciplineProposalId { get; set; }
-        public int ApprovedByCitizenId { get; set; }
 
         public DisciplineDecision Decision { get; set; }   
         public DateTime DecisionDate { get; set; }

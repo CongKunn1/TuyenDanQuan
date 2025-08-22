@@ -2,7 +2,6 @@
 {
     public class RewardApproval : BaseEntity
     {
-        public int ApprovalId { get; set; }
         public int ProposalId { get; set; }
         public bool IsApproved { get; set; }
         public DateTime DecisionDate { get; set; }

@@ -2,8 +2,6 @@
 {
     public class DisciplineProposal : BaseEntity
     {
-        public int DisciplineProposalId { get; set; }
-
         public int UnitId { get; set; }
         public int CitizenId { get; set; }
 

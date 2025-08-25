@@ -13,6 +13,7 @@ namespace EFCoreCommon.Model
         public string EmailAddress { get; set; }
         public DateTime?  DateOfBirth { get; set; }
         public string Address { get; set; }
+        public int? UnitId { get; set; } = null;
         public ICollection<RequestCitizen> RequestCitizens { get; set; } = new List<RequestCitizen>();
 
     }

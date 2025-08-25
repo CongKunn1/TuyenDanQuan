@@ -5,20 +5,53 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace EFCoreCommon.Migrations
 {
-    public partial class addRelationAndChangeUnitType : Migration
+    /// <inheritdoc />
+    public partial class addModel : Migration
     {
+        /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
-            // 1. Sửa cột Unit.Type từ string -> int
-            migrationBuilder.AlterColumn<int>(
-                name: "Type",
-                table: "Unit",
-                type: "int",
-                nullable: false,
-                oldClrType: typeof(string),
-                oldType: "nvarchar(max)");
+            migrationBuilder.CreateTable(
+                name: "Citizen",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    FullName = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    IdentificationNumber = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Sex = table.Column<int>(type: "int", nullable: true),
+                    PhoneNumber = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    EmailAddress = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    DateOfBirth = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    Address = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    CreatedTime = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    UpdatedTime = table.Column<DateTime>(type: "datetime2", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Citizen", x => x.Id);
+                });
 
-            // 2. Tạo bảng Request
+            migrationBuilder.CreateTable(
+                name: "Unit",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Code = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    UnitName = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Type = table.Column<int>(type: "int", nullable: false),
+                    EmailAddress = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    PhoneNumber = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Address = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    CreatedTime = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    UpdatedTime = table.Column<DateTime>(type: "datetime2", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Unit", x => x.Id);
+                });
+
             migrationBuilder.CreateTable(
                 name: "Request",
                 columns: table => new
@@ -51,7 +84,6 @@ namespace EFCoreCommon.Migrations
                         onDelete: ReferentialAction.Restrict);
                 });
 
-            // 3. Tạo bảng trung gian RequestCitizen
             migrationBuilder.CreateTable(
                 name: "RequestCitizen",
                 columns: table => new
@@ -80,7 +112,6 @@ namespace EFCoreCommon.Migrations
                         onDelete: ReferentialAction.Cascade);
                 });
 
-            // Index
             migrationBuilder.CreateIndex(
                 name: "IX_Request_ReceiveUnitId",
                 table: "Request",
@@ -102,22 +133,20 @@ namespace EFCoreCommon.Migrations
                 column: "RequestId");
         }
 
+        /// <inheritdoc />
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
                 name: "RequestCitizen");
 
             migrationBuilder.DropTable(
+                name: "Citizen");
+
+            migrationBuilder.DropTable(
                 name: "Request");
 
-            // Đổi lại Unit.Type về string nếu rollback
-            migrationBuilder.AlterColumn<string>(
-                name: "Type",
-                table: "Unit",
-                type: "nvarchar(max)",
-                nullable: false,
-                oldClrType: typeof(int),
-                oldType: "int");
+            migrationBuilder.DropTable(
+                name: "Unit");
         }
     }
 }

@@ -1,5 +1,8 @@
-﻿namespace EFCoreCommon.Model
+﻿using System.ComponentModel.DataAnnotations.Schema;
+
+namespace EFCoreCommon.Model
 {
+    [Table("Citizen")]
     public class Citizen : BaseEntity
     {
 
@@ -10,6 +13,7 @@
         public string EmailAddress { get; set; }
         public DateTime?  DateOfBirth { get; set; }
         public string Address { get; set; }
+        public ICollection<RequestCitizen> RequestCitizens { get; set; } = new List<RequestCitizen>();
 
     }
 }

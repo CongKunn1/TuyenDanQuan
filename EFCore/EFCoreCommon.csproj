@@ -16,4 +16,8 @@
     <Folder Include="Migrations\" />
   </ItemGroup>
 
+  <ItemGroup>
+    <None Include="EFConstants\UnitLeverEnum.cs" />
+  </ItemGroup>
+
 </Project>

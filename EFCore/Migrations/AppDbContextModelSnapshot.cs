@@ -62,7 +62,7 @@ namespace EFCoreCommon.Migrations
                     b.ToTable("Citizen");
                 });
 
-            modelBuilder.Entity("EFCoreCommon.Model.DisciplineApproval", b =>
+            modelBuilder.Entity("EFCoreCommon.Model.Request", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -70,113 +70,25 @@ namespace EFCoreCommon.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<int?>("ApprovedById")
-                        .HasColumnType("int");
-
-                    b.Property<string>("Comments")
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<DateTime>("CreatedTime")
                         .HasColumnType("datetime2");
 
-                    b.Property<int>("Decision")
-                        .HasColumnType("int");
-
-                    b.Property<DateTime>("DecisionDate")
+                    b.Property<DateTime?>("DateRequest")
                         .HasColumnType("datetime2");
-
-                    b.Property<int>("DisciplineProposalId")
-                        .HasColumnType("int");
-
-                    b.Property<DateTime>("UpdatedTime")
-                        .HasColumnType("datetime2");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("ApprovedById");
-
-                    b.HasIndex("DisciplineProposalId");
-
-                    b.ToTable("DisciplineApproval");
-                });
-
-            modelBuilder.Entity("EFCoreCommon.Model.DisciplineProposal", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<int>("CitizenId")
-                        .HasColumnType("int");
-
-                    b.Property<DateTime>("CreatedDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<DateTime>("CreatedTime")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("Notes")
-                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Reason")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("UnitId")
+                    b.Property<int>("ReceiveUnitId")
                         .HasColumnType("int");
 
-                    b.Property<DateTime>("UpdatedTime")
-                        .HasColumnType("datetime2");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("CitizenId");
-
-                    b.HasIndex("UnitId");
-
-                    b.ToTable("DisciplineProposal");
-                });
-
-            modelBuilder.Entity("EFCoreCommon.Model.Mission", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<int>("CitizenId")
-                        .HasColumnType("int");
-
-                    b.Property<DateTime>("CreatedTime")
-                        .HasColumnType("datetime2");
-
-                    b.Property<DateTime>("DecisionDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("DecisionNumber")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Description")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTime?>("EndDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<DateTime>("StartDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("Status")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("TaskId")
+                    b.Property<int>("RequestUnitId")
                         .HasColumnType("int");
 
                     b.Property<string>("Title")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("UnitId")
+                    b.Property<int>("Type")
                         .HasColumnType("int");
 
                     b.Property<DateTime>("UpdatedTime")
@@ -184,52 +96,14 @@ namespace EFCoreCommon.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("CitizenId");
+                    b.HasIndex("ReceiveUnitId");
 
-                    b.HasIndex("UnitId");
+                    b.HasIndex("RequestUnitId");
 
-                    b.ToTable("Mission");
+                    b.ToTable("Request");
                 });
 
-            modelBuilder.Entity("EFCoreCommon.Model.RewardApproval", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<int?>("ApprovedById")
-                        .HasColumnType("int");
-
-                    b.Property<string>("Comments")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTime>("CreatedTime")
-                        .HasColumnType("datetime2");
-
-                    b.Property<DateTime>("DecisionDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<bool>("IsApproved")
-                        .HasColumnType("bit");
-
-                    b.Property<int>("ProposalId")
-                        .HasColumnType("int");
-
-                    b.Property<DateTime>("UpdatedTime")
-                        .HasColumnType("datetime2");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("ApprovedById");
-
-                    b.HasIndex("ProposalId");
-
-                    b.ToTable("RewardApproval");
-                });
-
-            modelBuilder.Entity("EFCoreCommon.Model.RewardProposal", b =>
+            modelBuilder.Entity("EFCoreCommon.Model.RequestCitizen", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -240,19 +114,10 @@ namespace EFCoreCommon.Migrations
                     b.Property<int>("CitizenId")
                         .HasColumnType("int");
 
-                    b.Property<DateTime>("CreatedDate")
-                        .HasColumnType("datetime2");
-
                     b.Property<DateTime>("CreatedTime")
                         .HasColumnType("datetime2");
 
-                    b.Property<string>("Notes")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Reason")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("UnitId")
+                    b.Property<int>("RequestId")
                         .HasColumnType("int");
 
                     b.Property<DateTime>("UpdatedTime")
@@ -262,9 +127,9 @@ namespace EFCoreCommon.Migrations
 
                     b.HasIndex("CitizenId");
 
-                    b.HasIndex("UnitId");
+                    b.HasIndex("RequestId");
 
-                    b.ToTable("RewardProposal");
+                    b.ToTable("RequestCitizen");
                 });
 
             modelBuilder.Entity("EFCoreCommon.Model.Unit", b =>
@@ -290,10 +155,10 @@ namespace EFCoreCommon.Migrations
                     b.Property<string>("PhoneNumber")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("UnitName")
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<int>("Type")
+                        .HasColumnType("int");
 
-                    b.Property<string>("UnitType")
+                    b.Property<string>("UnitName")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime>("UpdatedTime")
@@ -304,105 +169,52 @@ namespace EFCoreCommon.Migrations
                     b.ToTable("Unit");
                 });
 
-            modelBuilder.Entity("EFCoreCommon.Model.DisciplineApproval", b =>
+            modelBuilder.Entity("EFCoreCommon.Model.Request", b =>
                 {
-                    b.HasOne("EFCoreCommon.Model.Citizen", "ApprovedBy")
+                    b.HasOne("EFCoreCommon.Model.Unit", "ReceiveUnit")
                         .WithMany()
-                        .HasForeignKey("ApprovedById");
-
-                    b.HasOne("EFCoreCommon.Model.DisciplineProposal", "Proposal")
-                        .WithMany("DisciplineApprovals")
-                        .HasForeignKey("DisciplineProposalId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .HasForeignKey("ReceiveUnitId")
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
-                    b.Navigation("ApprovedBy");
+                    b.HasOne("EFCoreCommon.Model.Unit", "RequestUnit")
+                        .WithMany()
+                        .HasForeignKey("RequestUnitId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
 
-                    b.Navigation("Proposal");
+                    b.Navigation("ReceiveUnit");
+
+                    b.Navigation("RequestUnit");
                 });
 
-            modelBuilder.Entity("EFCoreCommon.Model.DisciplineProposal", b =>
+            modelBuilder.Entity("EFCoreCommon.Model.RequestCitizen", b =>
                 {
                     b.HasOne("EFCoreCommon.Model.Citizen", "Citizen")
-                        .WithMany()
+                        .WithMany("RequestCitizens")
                         .HasForeignKey("CitizenId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("EFCoreCommon.Model.Unit", "Unit")
-                        .WithMany()
-                        .HasForeignKey("UnitId")
+                    b.HasOne("EFCoreCommon.Model.Request", "Request")
+                        .WithMany("RequestCitizens")
+                        .HasForeignKey("RequestId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("Citizen");
 
-                    b.Navigation("Unit");
+                    b.Navigation("Request");
                 });
 
-            modelBuilder.Entity("EFCoreCommon.Model.Mission", b =>
+            modelBuilder.Entity("EFCoreCommon.Model.Citizen", b =>
                 {
-                    b.HasOne("EFCoreCommon.Model.Citizen", "Citizen")
-                        .WithMany()
-                        .HasForeignKey("CitizenId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("EFCoreCommon.Model.Unit", "Unit")
-                        .WithMany()
-                        .HasForeignKey("UnitId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Citizen");
-
-                    b.Navigation("Unit");
+                    b.Navigation("RequestCitizens");
                 });
 
-            modelBuilder.Entity("EFCoreCommon.Model.RewardApproval", b =>
+            modelBuilder.Entity("EFCoreCommon.Model.Request", b =>
                 {
-                    b.HasOne("EFCoreCommon.Model.Citizen", "ApprovedBy")
-                        .WithMany()
-                        .HasForeignKey("ApprovedById");
-
-                    b.HasOne("EFCoreCommon.Model.RewardProposal", "Proposal")
-                        .WithMany("RewardApprovals")
-                        .HasForeignKey("ProposalId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("ApprovedBy");
-
-                    b.Navigation("Proposal");
-                });
-
-            modelBuilder.Entity("EFCoreCommon.Model.RewardProposal", b =>
-                {
-                    b.HasOne("EFCoreCommon.Model.Citizen", "Citizen")
-                        .WithMany()
-                        .HasForeignKey("CitizenId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("EFCoreCommon.Model.Unit", "Unit")
-                        .WithMany()
-                        .HasForeignKey("UnitId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Citizen");
-
-                    b.Navigation("Unit");
-                });
-
-            modelBuilder.Entity("EFCoreCommon.Model.DisciplineProposal", b =>
-                {
-                    b.Navigation("DisciplineApprovals");
-                });
-
-            modelBuilder.Entity("EFCoreCommon.Model.RewardProposal", b =>
-                {
-                    b.Navigation("RewardApprovals");
+                    b.Navigation("RequestCitizens");
                 });
 #pragma warning restore 612, 618
         }

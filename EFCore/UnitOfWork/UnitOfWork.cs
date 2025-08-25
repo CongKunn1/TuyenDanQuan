@@ -12,7 +12,6 @@ namespace EFCoreCommonCommon.UnitOfWork
 
         public IRepository<Citizen> Citizens { get; }
         public IRepository<Unit> Units { get; }
-
         public UnitOfWork(AppDbContext context)
         {
             _context = context;

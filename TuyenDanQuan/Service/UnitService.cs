@@ -15,7 +15,6 @@ namespace TuyenDanQuan.Service
             _mapper = mapper;
         }
 
-
         // Create
         public async Task<UnitDto> CreateAsync(CreateUnitDto dto)
         {
@@ -65,5 +64,39 @@ namespace TuyenDanQuan.Service
             await _unitOfWork.SaveChangesAsync();
             return true;
         }
+
+        public async Task<IEnumerable<CitizenDto>> AddExistingCitizensAsync(int unitId, List<int> citizenIds)
+        {
+            var unit = await _unitOfWork.Units.GetByIdAsync(unitId);
+            if (unit == null) return null;
+
+            var allCitizens = await _unitOfWork.Citizens.GetAllAsync();
+            var citizens = allCitizens
+                .Where(c => citizenIds.Contains(c.Id))
+                .ToList();
+
+            if (!citizens.Any()) return new List<CitizenDto>();
+
+            foreach (var citizen in citizens)
+            {
+                citizen.UnitId = unitId;
+            }
+
+            await _unitOfWork.SaveChangesAsync();
+
+            return citizens.Select(c => new CitizenDto
+            {
+                Id = c.Id,
+                FullName = c.FullName,
+                IdentificationNumber = c.IdentificationNumber,
+                Sex = c.Sex,
+                PhoneNumber = c.PhoneNumber,
+                EmailAddress = c.EmailAddress,
+                DateOfBirth = c.DateOfBirth,
+                Address = c.Address,
+                UnitId = c.UnitId
+            }).ToList();
+        }
+
     }
 }

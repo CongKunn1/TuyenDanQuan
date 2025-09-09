@@ -9,5 +9,7 @@ namespace TuyenDanQuan.Service
         Task<IEnumerable<UnitDto>> GetAllAsync();
         Task<UnitDto> GetByIdAsync(int id);
         Task<UnitDto> UpdateAsync(int id, CreateUnitDto dto);
+        Task<IEnumerable<CitizenDto>> AddExistingCitizensAsync(int unitId, List<int> citizenIds);
+
     }
 }

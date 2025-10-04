@@ -13,9 +13,11 @@ namespace EFCoreCommon.Model
         public string EmailAddress { get; set; }
         public string PhoneNumber { get; set; }
         public string Address { get; set; }
+        public ICollection<Mission> Missions { get; set; } = new List<Mission>();
+        public ICollection<Citizen> Citizens { get; set; } = new List<Citizen>();
 
     }
-  
+
 
 
 }

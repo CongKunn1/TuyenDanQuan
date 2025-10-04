@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using TuyenDanQuan.Data;
 
@@ -11,9 +12,11 @@ using TuyenDanQuan.Data;
 namespace EFCoreCommon.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250924081601_EditmodelMission")]
+    partial class EditmodelMission
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -61,8 +64,6 @@ namespace EFCoreCommon.Migrations
                         .HasColumnType("datetime2");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("UnitId");
 
                     b.ToTable("Citizen");
                 });
@@ -305,16 +306,6 @@ namespace EFCoreCommon.Migrations
                         });
                 });
 
-            modelBuilder.Entity("EFCoreCommon.Model.Citizen", b =>
-                {
-                    b.HasOne("EFCoreCommon.Model.Unit", "Unit")
-                        .WithMany("Citizens")
-                        .HasForeignKey("UnitId")
-                        .OnDelete(DeleteBehavior.Restrict);
-
-                    b.Navigation("Unit");
-                });
-
             modelBuilder.Entity("EFCoreCommon.Model.Mission", b =>
                 {
                     b.HasOne("TaskType", "TaskType")
@@ -324,9 +315,9 @@ namespace EFCoreCommon.Migrations
                         .IsRequired();
 
                     b.HasOne("EFCoreCommon.Model.Unit", "Unit")
-                        .WithMany("Missions")
+                        .WithMany()
                         .HasForeignKey("UnitId")
-                        .OnDelete(DeleteBehavior.Restrict)
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("TaskType");
@@ -377,13 +368,13 @@ namespace EFCoreCommon.Migrations
                     b.HasOne("EFCoreCommon.Model.Citizen", "Citizen")
                         .WithMany("RequestCitizens")
                         .HasForeignKey("CitizenId")
-                        .OnDelete(DeleteBehavior.Restrict)
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("EFCoreCommon.Model.Request", "Request")
                         .WithMany("RequestCitizens")
                         .HasForeignKey("RequestId")
-                        .OnDelete(DeleteBehavior.Restrict)
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("Citizen");
@@ -406,13 +397,6 @@ namespace EFCoreCommon.Migrations
             modelBuilder.Entity("EFCoreCommon.Model.Request", b =>
                 {
                     b.Navigation("RequestCitizens");
-                });
-
-            modelBuilder.Entity("EFCoreCommon.Model.Unit", b =>
-                {
-                    b.Navigation("Citizens");
-
-                    b.Navigation("Missions");
                 });
 
             modelBuilder.Entity("TaskType", b =>

@@ -14,7 +14,11 @@ namespace EFCoreCommon.Model
         public DateTime?  DateOfBirth { get; set; }
         public string Address { get; set; }
         public int? UnitId { get; set; } = null;
+        public Unit Unit { get; set; } = null!;
+
         public ICollection<RequestCitizen> RequestCitizens { get; set; } = new List<RequestCitizen>();
+        public ICollection<MissionCitizen> MissionCitizens { get; set; } = new List<MissionCitizen>();
+
 
     }
 }

@@ -2,7 +2,9 @@
 {
     public class Mission : BaseEntity
     {
-        public int TaskId { get; set; }
+        public int TaskTypeId { get; set; }         
+        public TaskType TaskType { get; set; } = null!;
+
         public int UnitId { get; set; }
 
         public string DecisionNumber { get; set; } = null!;  
@@ -14,12 +16,12 @@
         public string Title { get; set; } = null!;
         public string? Description { get; set; }
 
-         public int CitizenId { get; set; }
 
-        public string Status { get; set; } = "NotStarted"; // NotStarted/InProgress/Completed
+        public string Status { get; set; } = "NotStarted"; 
 
         public Unit Unit { get; set; } = null!;
-        public Citizen Citizen { get; set; } = null!;
+        public ICollection<MissionCitizen> MissionCitizens { get; set; } = new List<MissionCitizen>();
+
     }
 
 }

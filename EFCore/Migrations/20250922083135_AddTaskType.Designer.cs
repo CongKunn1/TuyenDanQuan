@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using TuyenDanQuan.Data;
 
@@ -11,9 +12,11 @@ using TuyenDanQuan.Data;
 namespace EFCoreCommon.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250922083135_AddTaskType")]
+    partial class AddTaskType
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -62,8 +65,6 @@ namespace EFCoreCommon.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("UnitId");
-
                     b.ToTable("Citizen");
                 });
 
@@ -74,6 +75,9 @@ namespace EFCoreCommon.Migrations
                         .HasColumnType("int");
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("CitizenId")
+                        .HasColumnType("int");
 
                     b.Property<DateTime>("CreatedTime")
                         .HasColumnType("datetime2");
@@ -110,26 +114,13 @@ namespace EFCoreCommon.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("CitizenId");
+
                     b.HasIndex("TaskTypeId");
 
                     b.HasIndex("UnitId");
 
                     b.ToTable("Mission");
-                });
-
-            modelBuilder.Entity("EFCoreCommon.Model.MissionCitizen", b =>
-                {
-                    b.Property<int>("MissionId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("CitizenId")
-                        .HasColumnType("int");
-
-                    b.HasKey("MissionId", "CitizenId");
-
-                    b.HasIndex("CitizenId");
-
-                    b.ToTable("MissionCitizen");
                 });
 
             modelBuilder.Entity("EFCoreCommon.Model.Request", b =>
@@ -305,18 +296,14 @@ namespace EFCoreCommon.Migrations
                         });
                 });
 
-            modelBuilder.Entity("EFCoreCommon.Model.Citizen", b =>
-                {
-                    b.HasOne("EFCoreCommon.Model.Unit", "Unit")
-                        .WithMany("Citizens")
-                        .HasForeignKey("UnitId")
-                        .OnDelete(DeleteBehavior.Restrict);
-
-                    b.Navigation("Unit");
-                });
-
             modelBuilder.Entity("EFCoreCommon.Model.Mission", b =>
                 {
+                    b.HasOne("EFCoreCommon.Model.Citizen", "Citizen")
+                        .WithMany()
+                        .HasForeignKey("CitizenId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.HasOne("TaskType", "TaskType")
                         .WithMany("Missions")
                         .HasForeignKey("TaskTypeId")
@@ -324,33 +311,16 @@ namespace EFCoreCommon.Migrations
                         .IsRequired();
 
                     b.HasOne("EFCoreCommon.Model.Unit", "Unit")
-                        .WithMany("Missions")
+                        .WithMany()
                         .HasForeignKey("UnitId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
-                    b.Navigation("TaskType");
-
-                    b.Navigation("Unit");
-                });
-
-            modelBuilder.Entity("EFCoreCommon.Model.MissionCitizen", b =>
-                {
-                    b.HasOne("EFCoreCommon.Model.Citizen", "Citizen")
-                        .WithMany("MissionCitizens")
-                        .HasForeignKey("CitizenId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
-                    b.HasOne("EFCoreCommon.Model.Mission", "Mission")
-                        .WithMany("MissionCitizens")
-                        .HasForeignKey("MissionId")
-                        .OnDelete(DeleteBehavior.Restrict)
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("Citizen");
 
-                    b.Navigation("Mission");
+                    b.Navigation("TaskType");
+
+                    b.Navigation("Unit");
                 });
 
             modelBuilder.Entity("EFCoreCommon.Model.Request", b =>
@@ -377,13 +347,13 @@ namespace EFCoreCommon.Migrations
                     b.HasOne("EFCoreCommon.Model.Citizen", "Citizen")
                         .WithMany("RequestCitizens")
                         .HasForeignKey("CitizenId")
-                        .OnDelete(DeleteBehavior.Restrict)
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("EFCoreCommon.Model.Request", "Request")
                         .WithMany("RequestCitizens")
                         .HasForeignKey("RequestId")
-                        .OnDelete(DeleteBehavior.Restrict)
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("Citizen");
@@ -393,26 +363,12 @@ namespace EFCoreCommon.Migrations
 
             modelBuilder.Entity("EFCoreCommon.Model.Citizen", b =>
                 {
-                    b.Navigation("MissionCitizens");
-
                     b.Navigation("RequestCitizens");
-                });
-
-            modelBuilder.Entity("EFCoreCommon.Model.Mission", b =>
-                {
-                    b.Navigation("MissionCitizens");
                 });
 
             modelBuilder.Entity("EFCoreCommon.Model.Request", b =>
                 {
                     b.Navigation("RequestCitizens");
-                });
-
-            modelBuilder.Entity("EFCoreCommon.Model.Unit", b =>
-                {
-                    b.Navigation("Citizens");
-
-                    b.Navigation("Missions");
                 });
 
             modelBuilder.Entity("TaskType", b =>

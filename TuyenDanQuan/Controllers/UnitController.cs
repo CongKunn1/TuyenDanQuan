@@ -1,5 +1,6 @@
 ﻿using EFCoreCommon.Model;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using TuyenDanQuan.Models;
 using TuyenDanQuan.Service;
 
@@ -58,5 +59,19 @@ namespace TuyenDanQuan.Controllers
             if (!deleted) return NotFound();
             return NoContent();
         }
+        [HttpPost("{unitId}/citizens")]
+        public async Task<IActionResult> AddExistingCitizensToUnit(int unitId, [FromBody] AddCitizenIdsDto dto)
+        {
+            var citizens = await _unitService.AddExistingCitizensAsync(unitId, dto.CitizenIds);
+            if (citizens == null) return NotFound($"Không tìm thấy Unit với Id = {unitId}");
+
+            return Ok(new
+            {
+                Message = $" Đã thêm danh sách cá nhân vào Đơn vị  ",
+                Citizens = citizens
+            });
+        }
+
+
     }
 }

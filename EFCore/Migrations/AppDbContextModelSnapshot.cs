@@ -62,7 +62,74 @@ namespace EFCoreCommon.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("UnitId");
+
                     b.ToTable("Citizen");
+                });
+
+            modelBuilder.Entity("EFCoreCommon.Model.Mission", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<DateTime>("CreatedTime")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime>("DecisionDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("DecisionNumber")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Description")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime?>("EndDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime>("StartDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Status")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("TaskTypeId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Title")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("UnitId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("UpdatedTime")
+                        .HasColumnType("datetime2");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("TaskTypeId");
+
+                    b.HasIndex("UnitId");
+
+                    b.ToTable("Mission");
+                });
+
+            modelBuilder.Entity("EFCoreCommon.Model.MissionCitizen", b =>
+                {
+                    b.Property<int>("MissionId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("CitizenId")
+                        .HasColumnType("int");
+
+                    b.HasKey("MissionId", "CitizenId");
+
+                    b.HasIndex("CitizenId");
+
+                    b.ToTable("MissionCitizen");
                 });
 
             modelBuilder.Entity("EFCoreCommon.Model.Request", b =>
@@ -172,6 +239,120 @@ namespace EFCoreCommon.Migrations
                     b.ToTable("Unit");
                 });
 
+            modelBuilder.Entity("TaskType", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Code")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("CreatedTime")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Description")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Name")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("UpdatedTime")
+                        .HasColumnType("datetime2");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("TaskTypes");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            Code = "TRAIN",
+                            CreatedTime = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Description = "Nhiệm vụ huấn luyện dân quân",
+                            Name = "Huấn luyện",
+                            UpdatedTime = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
+                        },
+                        new
+                        {
+                            Id = 2,
+                            Code = "PATROL",
+                            CreatedTime = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Description = "Nhiệm vụ tuần tra an ninh",
+                            Name = "Tuần tra",
+                            UpdatedTime = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
+                        },
+                        new
+                        {
+                            Id = 3,
+                            Code = "SUPPORT",
+                            CreatedTime = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Description = "Hỗ trợ địa phương, cứu trợ",
+                            Name = "Hỗ trợ",
+                            UpdatedTime = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
+                        },
+                        new
+                        {
+                            Id = 4,
+                            Code = "DEFENSE",
+                            CreatedTime = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Description = "Tham gia phòng thủ khi cần",
+                            Name = "Phòng thủ",
+                            UpdatedTime = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
+                        });
+                });
+
+            modelBuilder.Entity("EFCoreCommon.Model.Citizen", b =>
+                {
+                    b.HasOne("EFCoreCommon.Model.Unit", "Unit")
+                        .WithMany("Citizens")
+                        .HasForeignKey("UnitId")
+                        .OnDelete(DeleteBehavior.Restrict);
+
+                    b.Navigation("Unit");
+                });
+
+            modelBuilder.Entity("EFCoreCommon.Model.Mission", b =>
+                {
+                    b.HasOne("TaskType", "TaskType")
+                        .WithMany("Missions")
+                        .HasForeignKey("TaskTypeId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("EFCoreCommon.Model.Unit", "Unit")
+                        .WithMany("Missions")
+                        .HasForeignKey("UnitId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("TaskType");
+
+                    b.Navigation("Unit");
+                });
+
+            modelBuilder.Entity("EFCoreCommon.Model.MissionCitizen", b =>
+                {
+                    b.HasOne("EFCoreCommon.Model.Citizen", "Citizen")
+                        .WithMany("MissionCitizens")
+                        .HasForeignKey("CitizenId")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
+
+                    b.HasOne("EFCoreCommon.Model.Mission", "Mission")
+                        .WithMany("MissionCitizens")
+                        .HasForeignKey("MissionId")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
+
+                    b.Navigation("Citizen");
+
+                    b.Navigation("Mission");
+                });
+
             modelBuilder.Entity("EFCoreCommon.Model.Request", b =>
                 {
                     b.HasOne("EFCoreCommon.Model.Unit", "ReceiveUnit")
@@ -212,12 +393,31 @@ namespace EFCoreCommon.Migrations
 
             modelBuilder.Entity("EFCoreCommon.Model.Citizen", b =>
                 {
+                    b.Navigation("MissionCitizens");
+
                     b.Navigation("RequestCitizens");
+                });
+
+            modelBuilder.Entity("EFCoreCommon.Model.Mission", b =>
+                {
+                    b.Navigation("MissionCitizens");
                 });
 
             modelBuilder.Entity("EFCoreCommon.Model.Request", b =>
                 {
                     b.Navigation("RequestCitizens");
+                });
+
+            modelBuilder.Entity("EFCoreCommon.Model.Unit", b =>
+                {
+                    b.Navigation("Citizens");
+
+                    b.Navigation("Missions");
+                });
+
+            modelBuilder.Entity("TaskType", b =>
+                {
+                    b.Navigation("Missions");
                 });
 #pragma warning restore 612, 618
         }

@@ -339,13 +339,13 @@ namespace EFCoreCommon.Migrations
                     b.HasOne("EFCoreCommon.Model.Citizen", "Citizen")
                         .WithMany("MissionCitizens")
                         .HasForeignKey("CitizenId")
-                        .OnDelete(DeleteBehavior.Restrict)
+                        .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
                     b.HasOne("EFCoreCommon.Model.Mission", "Mission")
                         .WithMany("MissionCitizens")
                         .HasForeignKey("MissionId")
-                        .OnDelete(DeleteBehavior.Restrict)
+                        .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
                     b.Navigation("Citizen");
@@ -377,13 +377,13 @@ namespace EFCoreCommon.Migrations
                     b.HasOne("EFCoreCommon.Model.Citizen", "Citizen")
                         .WithMany("RequestCitizens")
                         .HasForeignKey("CitizenId")
-                        .OnDelete(DeleteBehavior.Restrict)
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("EFCoreCommon.Model.Request", "Request")
                         .WithMany("RequestCitizens")
                         .HasForeignKey("RequestId")
-                        .OnDelete(DeleteBehavior.Restrict)
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("Citizen");

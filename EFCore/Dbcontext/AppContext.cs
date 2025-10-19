@@ -1,5 +1,6 @@
 ﻿using EFCoreCommon.Model;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace TuyenDanQuan.Data
 {
@@ -59,13 +60,13 @@ namespace TuyenDanQuan.Data
                 .HasOne(mc => mc.Mission)
                 .WithMany(m => m.MissionCitizens)
                 .HasForeignKey(mc => mc.MissionId)
-                .OnDelete(DeleteBehavior.Restrict); 
+                .OnDelete(DeleteBehavior.NoAction); 
 
             modelBuilder.Entity<MissionCitizen>()
                 .HasOne(mc => mc.Citizen)
-                .WithMany(c => c.MissionCitizens)
+                .WithMany(c => c.MissionCitizens)   
                 .HasForeignKey(mc => mc.CitizenId)
-                .OnDelete(DeleteBehavior.Restrict); 
+                .OnDelete(DeleteBehavior.NoAction); 
 
             modelBuilder.Entity<TaskType>().HasData(
                 new TaskType { Id = 1, Code = "TRAIN", Name = "Huấn luyện", Description = "Nhiệm vụ huấn luyện dân quân" },
